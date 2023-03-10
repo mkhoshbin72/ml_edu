@@ -1,2 +1,5 @@
 movie_recomendation/
 *.zip
+*.tar.gz
+*.npz
+*.csv
