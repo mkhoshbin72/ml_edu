@@ -4,3 +4,11 @@ movie_recomendation/
 *.npz
 *.csv
 cifar10/cifar-10-python
+behlaer_parrinello/fortnet-data22
+behlaer_parrinello/fortnet-data22.tar.gz
+behlaer_parrinello/*.json
+behlaer_parrinello/*.csv
+*.gif
+*.png
+*.pdf
+*.jpeg
