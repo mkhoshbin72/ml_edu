@@ -82,54 +82,65 @@ class SymetryFunctions:
                 gs.append(sum(g))
             ls.append(gs)
         return ls
-
-dataset = read_data('sample.json')
-sf = SymetryFunctions(
-    dataset=dataset,
-    R_c=6,
-    R_s=1,
-    eta=1,
-    la=1,
-    zeta=0.1,
-)
-print(sf.G2_sum())
+    
+    def get_targets(self):
+        ls = []
+        for k,v in tqdm(self.dataset.items()):
+            ls.append(v['targets'][0][0])
+        return ls
 
 
-exit()
-cols = [
-    'datapoint',
-    'atomicweights',
-    'geometry_basis_x',
-    'geometry_basis_y',
-    'geometry_basis_z',
-    'geometry_coordinates',
-    'geometry_localattoatnum',
-    'geometry_localattoglobalsp',
-    'geometry_localattolocalsp',
-    'targets'
-]
-df = pd.DataFrame(columns=cols)
 
-for k,v in tqdm(dataset.items()):
-    datapoint = k
-    num = len(v['atomicweights'])
+if __name__ == '__main__':
+    dataset = read_data('sample1.json')
+    sf = SymetryFunctions(
+        dataset=dataset,
+        R_c=1,
+        R_s=1,
+        eta=1,
+        la=1,
+        zeta=0.1,
+    )
+    # print(sf.G1_sum())
+    # print(sf.G2_sum())
+    print(sf.get_targets())
 
-    for i in range(num):
-        d = {}
-        d['datapoint'] = datapoint
 
-        for kk in v.keys():
-            if kk == 'geometry_basis':
-                gbx = v[kk][0]
-                gby = v[kk][1]
-                gbz = v[kk][2]
-                d['geometry_basis_x'], d['geometry_basis_y'], d['geometry_basis_z'] = gbx, gby, gbz
-                continue
-            if kk == 'targets':
-                e = v[kk][0][0]
-                d[kk] = e
-                continue
-            d[kk] = v[kk][i]
-        df = df.append(d, ignore_index=True)
+    exit()
+    cols = [
+        'datapoint',
+        'atomicweights',
+        'geometry_basis_x',
+        'geometry_basis_y',
+        'geometry_basis_z',
+        'geometry_coordinates',
+        'geometry_localattoatnum',
+        'geometry_localattoglobalsp',
+        'geometry_localattolocalsp',
+        'targets'
+    ]
+    df = pd.DataFrame(columns=cols)
 
-df.to_csv('df.csv')
+    for k,v in tqdm(dataset.items()):
+        datapoint = k
+        num = len(v['atomicweights'])
+
+        for i in range(num):
+            d = {}
+            d['datapoint'] = datapoint
+
+            for kk in v.keys():
+                if kk == 'geometry_basis':
+                    gbx = v[kk][0]
+                    gby = v[kk][1]
+                    gbz = v[kk][2]
+                    d['geometry_basis_x'], d['geometry_basis_y'], d['geometry_basis_z'] = gbx, gby, gbz
+                    continue
+                if kk == 'targets':
+                    e = v[kk][0][0]
+                    d[kk] = e
+                    continue
+                d[kk] = v[kk][i]
+            df = df.append(d, ignore_index=True)
+
+    df.to_csv('df.csv')

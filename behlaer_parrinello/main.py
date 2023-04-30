@@ -2,27 +2,50 @@ import tensorflow as tf
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model, Sequential
 
+import numpy as np
 
-# DATA PREPERATION
+from utils import SymetryFunctions, read_data
 
 
+dataset = read_data('sample1.json')
+sf = SymetryFunctions(
+    dataset=dataset,
+    R_c=1,
+    R_s=1,
+    eta=1,
+    la=1,
+    zeta=0.1,
+)
+g1 = sf.G1_sum()
+g2 = sf.G2_sum()
+data = np.array([(g1[0][i], g2[0][i]) for i in range(len(g1[0]))]).astype(np.float32)
 
+targets = np.array(sf.get_targets()).astype(np.float32)
+
+atoms_num = 64
+symetry_funcs_num = 2
+
+model = Sequential()
+model.add(Input(shape=symetry_funcs_num))
+model.add(Dense(40, activation='tanh'))
+model.add(Dense(40, activation='tanh'))
+model.add(Dense(1, activation='tanh'))
+
+weights = model.get_weights()
 
 ls = []
-n = 64
-for i in range(n):
+for i in range(atoms_num):
 
-    model = Sequential()
+    model.compile(optimizer='adam', loss=tf.keras.losses.MSE)
+    model.fit(
+        x=np.array([data[i, :]]),
+        y=np.array(targets),
+        batch_size=1,
+        epochs=10
+    )
 
-    model.add(Input(2))
-    model.add(Dense(40))
-    model.add(Dense(40))
-    model.add(Dense(1))
-
-
-    model.compile(optimizer='adam', loss='rmse')
-    model.fit()
-
-    ls.append(model())
-
-total_energy = sum(ls)
+    ls.append(model.predict(np.array([data[i, :]])))
+    model.set_weights(weights)
+    
+print(ls)
+# total_energy = sum(ls)
