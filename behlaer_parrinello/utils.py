@@ -36,7 +36,7 @@ class SymetryFunctions:
         self,
         R_ij    : np.array
         ):
-        return math.pow(math.e, -self.eta * math.pow(magnitude(R_ij)-self.R_s, 2)) * self.cutoff(R_ij)
+        return pow(math.e, -self.eta * pow(magnitude(R_ij)-self.R_s, 2)) * self.cutoff(R_ij)
 
     def G2(
         self,
@@ -47,8 +47,8 @@ class SymetryFunctions:
 
         theta_ijk = np.dot(R_ij, R_ik)/(magnitude(R_ij) * magnitude(R_ik))
 
-        return math.pow(1 + self.la * math.cos(theta_ijk), self.zeta) * \
-            math.pow(math.e, -self.eta * (math.sqrt(magnitude(R_ij))+math.sqrt(magnitude(R_ik))+math.sqrt(magnitude(R_jk)))) * \
+        return pow(1 + self.la * math.cos(theta_ijk), self.zeta) * \
+            pow(math.e, -self.eta * (math.sqrt(magnitude(R_ij))+math.sqrt(magnitude(R_ik))+math.sqrt(magnitude(R_jk)))) * \
             self.cutoff(R_ij) * self.cutoff(R_ik) * self.cutoff(R_jk)
 
 
@@ -70,7 +70,7 @@ class SymetryFunctions:
         for k,v in tqdm(self.dataset.items()):
             gs = []
             for i in range(len(v['geometry_coordinates'])):
-                g = [math.pow(1-self.zeta, 2) * self.G2(
+                g = [pow(1-self.zeta, 2) * self.G2(
                     np.subtract(v['geometry_coordinates'][i], v['geometry_coordinates'][j]),
                     np.subtract(v['geometry_coordinates'][i], v['geometry_coordinates'][k]),
                     np.subtract(v['geometry_coordinates'][j], v['geometry_coordinates'][k])

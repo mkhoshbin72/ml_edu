@@ -30,13 +30,13 @@ model.add(Input(shape=symetry_funcs_num))
 model.add(Dense(40, activation='tanh'))
 model.add(Dense(40, activation='tanh'))
 model.add(Dense(1, activation='tanh'))
+model.compile(optimizer='adam', loss=tf.keras.losses.MSE)
 
 weights = model.get_weights()
 
 ls = []
 for i in range(atoms_num):
 
-    model.compile(optimizer='adam', loss=tf.keras.losses.MSE)
     model.fit(
         x=np.array([data[i, :]]),
         y=np.array(targets),
