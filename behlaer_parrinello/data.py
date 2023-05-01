@@ -1,9 +1,9 @@
-import h5py
-import pandas as pd
 from tqdm import tqdm
-import json
 import numpy as np
+####################################
 
+import h5py
+import json
 
 
 def traverse_datasets(hdf_file):
@@ -39,9 +39,6 @@ with h5py.File('fortnet-data22/data/01_Taining_on_Global_Energy_Terms/Training/d
             dic[datapoint] = {}
         if datapoint in dic:
             dic[datapoint][col] = dataset
-        # cc+=1
-        # if cc == 100:
-        #     break
 
 
 with open("df.json", "w") as outfile:
